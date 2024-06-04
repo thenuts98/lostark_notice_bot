@@ -10,7 +10,7 @@
 
 
  ## TODO
-- [ ] `request` 사용하여 데이터 파싱
+- [x] `request` 사용하여 데이터 파싱
 - [ ] csv 저장 및 관리
 - [ ] 메세지 wrap 하기
 - [ ] discord webhook으로 post
