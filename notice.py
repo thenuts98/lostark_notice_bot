@@ -1,19 +1,17 @@
 import requests
 from bs4 import BeautifulSoup
+import time, datetime
 
 
 url = "https://lostark.game.onstove.com/News/Notice" # 로스트아크 공지페이지 주소
 
 
+
 def get_notice_code(url = url + '/List'):
-<<<<<<< HEAD
     """url에서 공지 목록 추출, 코드 list로 반환\n
     url에서 5자리 공지 코드를 추출합니다.\n
     6자리 되기 전에 섭종할듯\n
 
-=======
-    """url에서 공지 목록 추출, 코드 list로 반환
->>>>>>> 94211a6985b45ac99af03d03651909916bdcf124
     """
     with requests.get(url) as r:
 
@@ -35,31 +33,27 @@ def get_notice_code(url = url + '/List'):
     
 def get_notice(code):
     """ 주어진 코드 공지의 제목, 내용, 이미지 등 embed에 사용할 정보 구성
+    embed reference : https://discordpy.readthedocs.io/en/stable/api.html#embed
     """
     global url
     notice_url = url + '/Views/' + str(code)
     with requests.get(notice_url) as r:
-<<<<<<< HEAD
         soup = BeautifulSoup(r.text, "html.parser")
 
         
+        notice_kind = (soup.select('span.category.category--notice')[0].text) # 공지 종류
+        notice_title = (soup.select('span.article__title')[0].text) # 공지 제목
+        notice_content = (soup.select('div.fr-view')[0].text) # 공지 내용  
+        notice_content = notice_content.split('.')
+        notice_content = '\n\n'.join(notice_content[:4])
 
-        print(soup.select('div.fr-view')[0].text.replace('.', '.\n'))
-
+        return notice_kind, notice_title, notice_content
+        
         
     
-=======
-        print(r)
->>>>>>> 94211a6985b45ac99af03d03651909916bdcf124
 if __name__ == '__main__':
-
     notice_list = get_notice_code()
+    get_notice(notice_list[0])
+    
 
-    for i in notice_list:
-<<<<<<< HEAD
-        get_notice(i)
-
-=======
-        get_notice(i.text)
->>>>>>> 94211a6985b45ac99af03d03651909916bdcf124
 
