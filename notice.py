@@ -40,12 +40,12 @@ def get_notice(code):
     with requests.get(notice_url) as r:
         soup = BeautifulSoup(r.text, "html.parser")
 
-        
-        notice_kind = (soup.select('span.category.category--notice')[0].text) # 공지 종류
+        notice_kind = (soup.select('span.category.category')[0].text) # 공지 종류
         notice_title = (soup.select('span.article__title')[0].text) # 공지 제목
         notice_content = (soup.select('div.fr-view')[0].text) # 공지 내용  
+        # . 단위로 잘라서 \n\n 넣고 합쳐주어야함.
         notice_content = notice_content.split('.')
-        notice_content = '\n\n'.join(notice_content[:4])
+        notice_content = '.\n\n'.join(notice_content[:3])
 
         return notice_kind, notice_title, notice_content
         

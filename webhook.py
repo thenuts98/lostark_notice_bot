@@ -20,7 +20,6 @@ def make_embed(code):
                         url = notice_url,
                         description=notice_content
                         )
-
     emb.set_thumbnail(url=image_url)
     return emb
 
@@ -33,5 +32,9 @@ async def send_webhook(emb):
 if __name__ == '__main__':
     
     notice_list = notice.get_notice_code()
-    emb = make_embed(notice_list[0])
-    asyncio.run(send_webhook(emb))
+    for i in notice_list:
+        try:
+            emb = make_embed(i)
+            asyncio.run(send_webhook(emb))
+        except Exception as e:
+            print(e)
