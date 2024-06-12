@@ -24,6 +24,9 @@
  ### | `requirements.txt`
  `pip -r installl`을 통해 종속성 패키지 설치
 
+ ### | `code`
+ 마지막으로 전송한 공지의 코드 저장
+
 
  ## TODO
 - [x] `request` 사용하여 데이터 파싱
