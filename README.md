@@ -35,6 +35,7 @@
 - [x] 메세지 wrap 하기
 - [x] discord webhook으로 post
 - [ ] telegram 알림
+- [ ] crontab 사용하여 주기적인 작동
     - 해야할까?
 
 ## etc
