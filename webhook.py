@@ -4,12 +4,14 @@ from dotenv import load_dotenv
 import os
 import aiohttp
 import asyncio
+import datetime, time
 
 load_dotenv()
 
-hook_url = os.environ.get('WEBHOOK_URL')
+hook_url = os.environ.get('WEBHOOK_URL') # 웹훅 dir은 credential하기에 .env로 관리
+f_code = os.environ.get('CODE_DIR') # 사용할 시스템마다 다르기 따문에 .env에 저장
+
 image_url = 'https://cdn-lostark.game.onstove.com/2018/obt/assets/images/common/thumb/logo.png' # 로스트아크 아이콘
-f_code = 'code'
 
 def make_embed(code):
     """
@@ -35,10 +37,10 @@ if __name__ == '__main__':
     
     notice_list = notice.get_notice_code() # 현재 목록 추출
     notice_list.sort() # 오름차순 정리
-    print(notice_list)
+    #print(notice_list)
     with open(f_code, 'r') as f:
         recent_code = f.readline() # 마지막으로 전송한 공지 코드
-    print('최근 전송한 notice code :', recent_code)
+    #print('최근 전송한 notice code :', recent_code)
     try:
         for i in notice_list:
             if int(i) > int(recent_code):
@@ -49,7 +51,7 @@ if __name__ == '__main__':
                 print(f'{i}번 공지 전송')
                 
     except Exception as e:
-        print(e.__str__)   
+        print(e)   
 
 
     # for i in notice_list:
