@@ -5,12 +5,13 @@ import os
 import aiohttp
 import asyncio
 import datetime, time
+import requests
 
 load_dotenv()
 
 hook_url = os.environ.get('WEBHOOK_URL') # 웹훅 dir은 credential하기에 .env로 관리
 f_code = os.environ.get('CODE_DIR') # 사용할 시스템마다 다르기 따문에 .env에 저장
-
+flaks_url = 'http://127.0.0.1:5000/status'
 image_url = 'https://cdn-lostark.game.onstove.com/2018/obt/assets/images/common/thumb/logo.png' # 로스트아크 아이콘
 
 def make_embed(code):
@@ -49,7 +50,11 @@ if __name__ == '__main__':
                 emb = make_embed(i)
                 asyncio.run(send_webhook(emb))
                 print(f'{i}번 공지 전송')
-                
+        post_data = {
+            'time' : datetime.datetime.now(),
+            'status' : 'online'
+        }
+        requests.post(flaks_url, data=post_data)
     except Exception as e:
         print(e)   
 

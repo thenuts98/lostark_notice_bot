@@ -20,6 +20,14 @@
 
     emb를 주어진 링크로 전송
 
+    
+
+ ### | `status_flask` 
+
+    webhook의 동작상태를 저장, 웹페이지로 전달함
+    HomeAssistant에서 파싱받기 위함
+
+
 
  ### | `requirements.txt`
  `pip -r installl`을 통해 종속성 패키지 설치
