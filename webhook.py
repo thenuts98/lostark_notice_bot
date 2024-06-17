@@ -34,7 +34,7 @@ async def send_webhook(emb):
         await webhook.send(embed=emb)
 
 
-if __name__ == '__main__':
+def webhook():
     print(f'{str(datetime.datetime.now())} 동작')
     notice_list = notice.get_notice_code() # 현재 목록 추출
     notice_list.sort() # 오름차순 정리
@@ -58,6 +58,9 @@ if __name__ == '__main__':
     except Exception as e:
         print(str(datetime.datetime.now()), end='\t' ) 
         print(e)  
+
+if __name__ == '__main__':
+    webhook()
 
 
     # for i in notice_list:

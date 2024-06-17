@@ -1,10 +1,12 @@
 import requests
 from bs4 import BeautifulSoup
 import time, datetime
-
+import os
+from dotenv import load_dotenv
 
 url = "https://lostark.game.onstove.com/News/Notice" # 로스트아크 공지페이지 주소
-
+api_url = "" # api 주소
+api_key = os.environ.get('CODE_DIR') # 발급받은 api 키
 
 
 def get_notice_code(url = url + '/List'):
@@ -49,6 +51,9 @@ def get_notice(code):
 
         return notice_kind, notice_title, notice_content
         
+
+def get_notice_api():
+
         
     
 if __name__ == '__main__':
