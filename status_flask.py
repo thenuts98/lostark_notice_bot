@@ -27,7 +27,7 @@ def status():
     else:
         if datetime.datetime.now() > notice_time + datetime.timedelta(minutes=5):
             notice_status = 'offline'
-        return render_template(status_html, notice_time = notice_time, notice_status = notice_status)
+    return render_template(status_html, notice_time = notice_time, notice_status = notice_status)
 
 if __name__ == '__main__':
     app.run()

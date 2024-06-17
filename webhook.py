@@ -35,7 +35,7 @@ async def send_webhook(emb):
 
 
 if __name__ == '__main__':
-    
+    print(f'{str(datetime.datetime.now())} 동작')
     notice_list = notice.get_notice_code() # 현재 목록 추출
     notice_list.sort() # 오름차순 정리
     #print(notice_list)
@@ -49,14 +49,15 @@ if __name__ == '__main__':
                     f.write(i)
                 emb = make_embed(i)
                 asyncio.run(send_webhook(emb))
-                print(f'{i}번 공지 전송')
+                print(f'{str(datetime.datetime.now)} : {i}번 공지 전송')
         post_data = {
             'time' : datetime.datetime.now(),
             'status' : 'online'
         }
         requests.post(flaks_url, data=post_data)
     except Exception as e:
-        print(e)   
+        print(str(datetime.datetime.now()), end='\t' ) 
+        print(e)  
 
 
     # for i in notice_list:
