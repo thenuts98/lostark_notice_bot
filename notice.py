@@ -52,7 +52,7 @@ def get_notice(code):
         return notice_kind, notice_title, notice_content
         
 
-def get_notice_api():
+# def get_notice_api():
 
         
     

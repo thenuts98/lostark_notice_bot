@@ -49,7 +49,7 @@ def webhook():
                     f.write(i)
                 emb = make_embed(i)
                 asyncio.run(send_webhook(emb))
-                print(f'{str(datetime.datetime.now)} : {i}번 공지 전송')
+                print(f'{str(datetime.datetime.now())} : {i}번 공지 전송')
         post_data = {
             'time' : datetime.datetime.now(),
             'status' : 'online'

@@ -30,4 +30,4 @@ def status():
     return render_template(status_html, notice_time = notice_time, notice_status = notice_status)
 
 if __name__ == '__main__':
-    app.run()
+    app.run(host='0.0.0.0')
