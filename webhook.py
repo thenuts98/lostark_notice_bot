@@ -78,6 +78,7 @@ def webhook():
         print(e)  
 
 def webhook_api():
+    print(f'{str(datetime.datetime.now())} 동작')
     df_notice = notice.get_notice_api()
     with open(f_code, 'r') as f:
         recent_code = f.readline() # 마지막으로 전송한 공지 코드
