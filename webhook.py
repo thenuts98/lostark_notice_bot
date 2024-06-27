@@ -6,6 +6,7 @@ import aiohttp
 import asyncio
 import datetime, time
 import requests
+import pandas as pd
 
 load_dotenv()
 
@@ -24,6 +25,20 @@ def make_embed(code):
     emb = discord.Embed(title=notice_kind + ' | ' + notice_title, 
                         url = notice_url,
                         description=notice_content
+                        )
+    emb.set_thumbnail(url=image_url)
+    return emb
+
+
+def make_embed_api(series):
+    """
+    DataFrame의 조건에 해당하는 한 series에 대해 embed 형성
+    """
+    notice_url = series['Link']
+    notice_kind = series['Type']
+    notice_title = series['Title']
+    emb = discord.Embed(title=notice_kind + ' | ' + notice_title, 
+                        url = notice_url,
                         )
     emb.set_thumbnail(url=image_url)
     return emb
@@ -62,8 +77,25 @@ def webhook():
         print(str(datetime.datetime.now()), end='\t' ) 
         print(e)  
 
+def webhook_api():
+    df_notice = notice.get_notice_api()
+    with open(f_code, 'r') as f:
+        recent_code = f.readline() # 마지막으로 전송한 공지 코드
+    df_notice = df_notice[df_notice['code'] > int(recent_code)]
+    df_notice = df_notice.reset_index(drop=True)
+
+    for i in range(len(df_notice)):
+        with open(f_code, 'w') as f:    
+            f.write(i['code'])
+        emb = make_embed_api(df_notice.loc[i])
+        asyncio.run(send_webhook(emb))
+        print(f'{str(datetime.datetime.now())} : {df_notice.loc[i]["code"]}번 공지 전송')
+
 if __name__ == '__main__':
-    webhook()
+    try:
+        webhook_api()
+    except Exception as e:
+        print(f'{str(datetime.datetime.now())} : {e}')
 
 
     # for i in notice_list:

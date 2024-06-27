@@ -3,10 +3,15 @@ from bs4 import BeautifulSoup
 import time, datetime
 import os
 from dotenv import load_dotenv
+import json
+import pandas as pd
+
+load_dotenv()
 
 url = "https://lostark.game.onstove.com/News/Notice" # 로스트아크 공지페이지 주소
-api_url = "" # api 주소
-api_key = os.environ.get('CODE_DIR') # 발급받은 api 키
+api_notice_url = "https://developer-lostark.game.onstove.com/news/notices" # api 주소
+api_event_url = ""
+api_key = os.environ.get('API_KEY') # 발급받은 api 키
 
 
 def get_notice_code(url = url + '/List'):
@@ -51,14 +56,27 @@ def get_notice(code):
 
         return notice_kind, notice_title, notice_content
         
+        
+def get_notice_api():
+    # API 호출에 필요한 헤더 작성
+    headers = {
+        'accept' : 'application/json',
+        'authorization' : api_key
+    }
 
-# def get_notice_api():
+    response = requests.get(api_notice_url, headers=headers) # RESPONSE 200이 정상 응답
+    # 응답 JSON 형식으로 변환
+    df_notice = pd.DataFrame(response.json())
+    df_notice['code'] = df_notice['Link'].str.slice(start=-5)
+    df_notice = df_notice.astype({'code':'int'})
+
+    df_notice = df_notice.sort_values('code', ascending=True)
+    
+    return df_notice
 
         
     
 if __name__ == '__main__':
-    notice_list = get_notice_code()
-    get_notice(notice_list[0])
-    
+    print(get_notice_api())
 
 
