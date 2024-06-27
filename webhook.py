@@ -50,11 +50,14 @@ def webhook():
                 emb = make_embed(i)
                 asyncio.run(send_webhook(emb))
                 print(f'{str(datetime.datetime.now())} : {i}번 공지 전송')
-        post_data = {
-            'time' : datetime.datetime.now(),
-            'status' : 'online'
-        }
-        requests.post(flaks_url, data=post_data)
+        
+        # 웹사이트에 동작 상태 전송
+        # post_data = {
+        #     'time' : datetime.datetime.now(),
+        #     'status' : 'online'
+        # }
+        # requests.post(flaks_url, data=post_data)
+
     except Exception as e:
         print(str(datetime.datetime.now()), end='\t' ) 
         print(e)  
