@@ -88,7 +88,7 @@ def webhook_api():
     for i in range(len(df_notice)):
         with open(f_code, 'w') as f:    
             f.write(str(df_notice.loc[i]['code']))
-        emb = make_embed_api(df_notice.loc[i])
+        emb = make_embed(df_notice.loc[i])
         asyncio.run(send_webhook(emb))
         print(f'{str(datetime.datetime.now())} : {df_notice.loc[i]["code"]}번 공지 전송')
 
