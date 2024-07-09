@@ -43,6 +43,15 @@ def make_embed_api(series):
     emb.set_thumbnail(url=image_url)
     return emb
 
+def make_embed_season3():
+    content = "왜냐면 이제부터 기다림이 24시간이 넘을 때마다\n대가리를 존나 쎄게 쳐서 제 머릿속을 뒤죽박죽 엉망진창으로 만들 거거든요!\n기다렸다는 것이 기억이 나지 않는다면\n안 기다린 게 아닐까요?\n그렇게 시즌3 나올때까지 하루가 지나기 전에 기억을 지운다면\n하루만에 시즌3이 나오는 것이 아닐까요???\n하룻밤만 기다리면 시즌3이 나온다니!\n생각만 해도 너무 즐거워요~!!!\n"
+    emb = discord.Embed(title = '하루만 기다리면 시즌3가 와요!!!!',
+                        url = 'https://www.inven.co.kr/board/lostark/4811/9350437',
+                        description=content)
+     
+    emb.set_thumbnail(url='https://cdn.discordapp.com/attachments/1178516056315269130/1260012051183570985/Screenshot_20240617_181541.jpg?ex=668dc52a&is=668c73aa&hm=702b991a9bd3657db9742771a8603616d8ac1a0af8395a77d4d33a5c4c2af0d3&')
+    return emb
+
 async def send_webhook(emb):
     async with aiohttp.ClientSession() as session:
         webhook = discord.Webhook.from_url(hook_url, session=session)
