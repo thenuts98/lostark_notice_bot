@@ -1,12 +1,13 @@
 import notice
 import discord
 from dotenv import load_dotenv
-import os
+import os, sys
 import aiohttp
 import asyncio
 import datetime, time
 import requests
 import pandas as pd
+import json
 
 load_dotenv()
 
@@ -59,7 +60,7 @@ async def send_webhook(emb):
 
 
 def webhook():
-    print(f'{str(datetime.datetime.now())} 동작')
+    
     notice_list = notice.get_notice_code() # 현재 목록 추출
     notice_list.sort() # 오름차순 정리
     #print(notice_list)
@@ -97,20 +98,23 @@ def webhook_api():
     for i in range(len(df_notice)):
         with open(f_code, 'w') as f:    
             f.write(str(df_notice.loc[i]['code']))
-        emb = make_embed(df_notice.loc[i])
+        emb = make_embed_api(df_notice.loc[i])
         asyncio.run(send_webhook(emb))
         print(f'{str(datetime.datetime.now())} : {df_notice.loc[i]["code"]}번 공지 전송')
 
 if __name__ == '__main__':
     try:
         webhook_api()
-    except Exception as e:
-        print(f'{str(datetime.datetime.now())} : {e}')
+        print(f'{str(datetime.datetime.now())} 동작')
+    except requests.exceptions.JSONDecodeError:
+        print(f'{str(datetime.datetime.now())} : 점검중입니다.' )
+    except:
+        print(f'{str(datetime.datetime.now())} : {repr(sys.exception())}')
 
 
     # for i in notice_list:
     #     try:
-    #         emb = make_embed(i)
+    #         emb = make_embed(i)                 
     #         asyncio.run(send_webhook(emb))
     #     except Exception as e:
     #         print(e)
