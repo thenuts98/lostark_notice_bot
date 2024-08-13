@@ -20,7 +20,7 @@ sequenceDiagram
 	
 
 ```
-
+![[README 2024-07-18 16.37.18.excalidraw|1000]]
 ## Description
 
 ###  `notice.py`
