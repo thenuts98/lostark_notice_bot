@@ -63,15 +63,16 @@ def get_notice_api():
         'accept' : 'application/json',
         'authorization' : api_key
     }
-
+    
     response = requests.get(api_notice_url, headers=headers) # RESPONSE 200이 정상 응답
     # 응답 JSON 형식으로 변환
     df_notice = pd.DataFrame(response.json())
+    
     df_notice['code'] = df_notice['Link'].str.slice(start=-5)
     df_notice = df_notice.astype({'code':'int'})
 
     df_notice = df_notice.sort_values('code', ascending=True)
-    
+
     return df_notice
 
         

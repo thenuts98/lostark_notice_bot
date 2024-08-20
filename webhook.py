@@ -44,7 +44,7 @@ def make_embed_api(series):
     emb.set_thumbnail(url=image_url)
     return emb
 
-def make_embed_season3(): # 시즌 3 업데이트 기념 메세지. depreceted
+def make_embed_season3(): # 시즌 3 업데이트 기념 메세지. deprecated
     content = "왜냐면 이제부터 기다림이 24시간이 넘을 때마다\n대가리를 존나 쎄게 쳐서 제 머릿속을 뒤죽박죽 엉망진창으로 만들 거거든요!\n기다렸다는 것이 기억이 나지 않는다면\n안 기다린 게 아닐까요?\n그렇게 시즌3 나올때까지 하루가 지나기 전에 기억을 지운다면\n하루만에 시즌3이 나오는 것이 아닐까요???\n하룻밤만 기다리면 시즌3이 나온다니!\n생각만 해도 너무 즐거워요~!!!\n"
     emb = discord.Embed(title = '하루만 기다리면 시즌3가 와요!!!!',
                         url = 'https://www.inven.co.kr/board/lostark/4811/9350437',
@@ -91,7 +91,6 @@ def webhook():
         print(e)  
 
 def webhook_api():
-    print(f'{str(datetime.datetime.now())} 동작')
     df_notice = notice.get_notice_api()
     with open(f_code, 'r') as f:
         recent_code = f.readline() # 마지막으로 전송한 공지 코드
