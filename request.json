@@ -1,0 +1,29 @@
+{
+    "ItemLevelMin": 0,
+    "ItemLevelMax": 0,
+    "ItemGradeQuality": 70,
+    "SkillOptions": [
+      {
+        "FirstOption": null,
+        "SecondOption": null,
+        "MinValue": null,
+        "MaxValue": null
+      }
+    ],
+    "EtcOptions": [
+      {
+        "FirstOption": 7,
+        "SecondOption": 45,
+        "MinValue": null,
+        "MaxValue": 3
+      }
+    ],
+    "Sort": "BUY_PRICE",
+    "CategoryCode": 200000,
+    "CharacterClass": null,
+    "ItemTier": null,
+    "ItemGrade": "고대",
+    "ItemName": null,
+    "PageNo": 0,
+    "SortCondition": "ASC"
+  }

@@ -104,6 +104,26 @@ def webhook_api():
         asyncio.run(send_webhook(emb))
         print(f'{str(datetime.datetime.now())} : {df_notice.loc[i]["code"]}번 공지 전송')
 
+
+def webhook_ark(buy_price, bid_price, option1, value1, value2):
+    """
+    최소 입찰가가 즉구가보다 낮을 때 알림
+    """
+    if value2 != None:
+        value = f'{value1} {value2}'
+    else:
+        value = value1
+    try:
+        emb = discord.Embed(title='경매장 입찰가 알림',
+                            description=f'즉구가 : {buy_price}\n최소 입찰가 : {bid_price}\n{option1} {value} 경매장 입찰가가 즉구가의 90% 이하입니다.',
+                            color=0xff0000)
+        emb.set_thumbnail(url=image_url)
+        asyncio.run(send_webhook(emb))
+        print(f'{str(datetime.datetime.now())} : 경매장 입찰가 알림 전송')
+    except:
+        print(f'{str(datetime.datetime.now())} : 경매장 입찰가 알림 전송 실패')
+
+
 if __name__ == '__main__':
     try:
         webhook_api()

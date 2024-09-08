@@ -56,6 +56,10 @@ sequenceDiagram
 ### | `code`
  마지막으로 전송한 공지의 코드 저장
 
+
+### | `auction.py`
+ 경매장 검색해서 최저가 출력 및 시세 확인
+
 ## TODO
 - [x] `request` 사용하여 데이터 파싱
 - [x] csv 저장 및 관리
