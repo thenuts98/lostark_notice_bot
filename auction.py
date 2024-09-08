@@ -5,16 +5,15 @@ from bs4 import BeautifulSoup
 import json
 import pandas as pd
 import webhook
+import traceback
 
 load_dotenv()
 
 api_url = "https://developer-lostark.game.onstove.com/auctions/items"
 api_key = os.getenv('API_KEY')
 
-# 현재 경로 추가
-
-
-json_template_path = "/home/kimnuts/working/lostark_auction/request.json"
+# 경매장 요청 json 경로
+json_template_path = "/home/kimnuts/working/lostark_notice_bot/request.json"
 
 # 아크패시브 옵션 딕셔너리
 ark_option_dict = {
@@ -31,6 +30,24 @@ ark_value_dict = {
     "중" : 2,
     "하" : 1
 }
+
+# 파일 경로 설정
+file_path = '/home/kimnuts/working/lostark_notice_bot/enddate_list.json'
+
+# 초기 리스트 설정
+initial_list = []
+
+# 파일이 존재하지 않으면 초기 리스트를 파일에 저장
+if not os.path.exists(file_path):
+    with open(file_path, 'w') as file:
+        json.dump(initial_list, file)
+
+# 파일에서 리스트 읽어오기
+with open(file_path, 'r') as file:
+    enddate_list = json.load(file)
+
+
+
 
 def ark_data_parser(option):
     """
@@ -96,14 +113,22 @@ def get_auction_data( first_option = "공격력 %", first_value = "상", second_
         
         bid_price = response_json['Items'][0]['AuctionInfo']['BidStartPrice']
 
-        
+        # enddate 체크
+        end_date = response_json['Items'][0]['AuctionInfo']['EndDate']
         if bid_price < buy_price * 0.9 and (first_value == '상' or (first_value == '중' and second_value == '중')):
-            webhook.webhook_ark(buy_price, bid_price, first_option, first_value, second_value)
-        
-        print(buy_price, bid_price)
+            if end_date not in enddate_list:
+                # enddate 값이 리스트에 없으면 추가
+                enddate_list.append(end_date)
+                # 리스트를 파일에 저장
+                with open(file_path, 'w') as file:
+                    json.dump(enddate_list, file)
+
+                webhook.webhook_ark(buy_price, bid_price, first_option, first_value, second_value)
 
         return bid_price
-    except:
+    except Exception as e:
+        print(e)
+        traceback.print_exc()
         return 0
     # if response.status_code == 200:
     #     print("Success:", response.json())
@@ -130,7 +155,7 @@ def price_dataframe():
     for i in item:
         for idx, option in enumerate(index):
             data[i][idx] = ark_data_parser( f"{i} {option}")
-            print(f"{i} {option} 검색")
+            #print(f"{i} {option} 검색")
 
     # DataFrame 생성
     df = pd.DataFrame(data, index=index)

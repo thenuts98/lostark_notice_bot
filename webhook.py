@@ -8,6 +8,7 @@ import datetime, time
 import requests
 import pandas as pd
 import json
+import auction
 
 load_dotenv()
 
@@ -115,7 +116,7 @@ def webhook_ark(buy_price, bid_price, option1, value1, value2):
         value = value1
     try:
         emb = discord.Embed(title='경매장 입찰가 알림',
-                            description=f'즉구가 : {buy_price}\n최소 입찰가 : {bid_price}\n{option1} {value} 경매장 입찰가가 즉구가의 90% 이하입니다.',
+                            description=f'즉구가 : {buy_price}\n최소 입찰가 : {bid_price}\n{option1} {value}',
                             color=0xff0000)
         emb.set_thumbnail(url=image_url)
         asyncio.run(send_webhook(emb))
@@ -128,6 +129,8 @@ if __name__ == '__main__':
     try:
         webhook_api()
         print(f'{str(datetime.datetime.now())} 동작')
+        auction.price_dataframe()
+
     except requests.exceptions.JSONDecodeError:
         print(f'{str(datetime.datetime.now())} : 점검중입니다.' )
     except:

@@ -5,6 +5,7 @@ import os
 from dotenv import load_dotenv
 import json
 import pandas as pd
+import auction
 
 load_dotenv()
 
