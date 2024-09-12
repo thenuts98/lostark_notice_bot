@@ -47,7 +47,11 @@ with open(file_path, 'r') as file:
     enddate_list = json.load(file)
 
 
-
+def notice_check(json_data, bid_price, buy_price, ):
+    """
+    알림을  보낼 조건을 체크하여 하나라도 들어 맞으면 True, 아니면 false 반환
+    조건 : 상단일 이상의 옵션이 입찰가가 낮게 나오거나, 아니면 즉구가가 그냥 낮게 나오거나
+    """
 
 def ark_data_parser(option):
     """
@@ -98,13 +102,6 @@ def get_auction_data( first_option = "공격력 %", first_value = "상", second_
             })
         
     
-        # 즉구가 반환
-        json_data['Sort'] = "BUY_PRICE"
-        response = requests.post(api_url, headers=headers, json=json_data)
-        response_json = response.json()
-
-        buy_price = response_json['Items'][0]['AuctionInfo']['BuyPrice']
-
 
         # 입찰가 반환
         json_data['Sort'] = "BIDSTART_PRICE"
@@ -112,19 +109,35 @@ def get_auction_data( first_option = "공격력 %", first_value = "상", second_
         response_json = response.json()
         
         bid_price = response_json['Items'][0]['AuctionInfo']['BidStartPrice']
+        bid_date = response_json['Items'][0]['AuctionInfo']['EndDate']
 
-        # enddate 체크
-        end_date = response_json['Items'][0]['AuctionInfo']['EndDate']
+        # 즉구가 반환
+        json_data['Sort'] = "BUY_PRICE"
+        response = requests.post(api_url, headers=headers, json=json_data)
+        response_json = response.json()
+        buy_price = response_json['Items'][0]['AuctionInfo']['BuyPrice']
+        buy_price2 = response_json['Items'][1]['AuctionInfo']['BuyPrice']
+        buy_date = response_json['Items'][0]['AuctionInfo']['EndDate']
+
+
         if bid_price < buy_price * 0.9 and (first_value == '상' or (first_value == '중' and second_value == '중')):
-            if end_date not in enddate_list:
+            if bid_date not in enddate_list:
                 # enddate 값이 리스트에 없으면 추가
-                enddate_list.append(end_date)
+                enddate_list.append(bid_date)
                 # 리스트를 파일에 저장
                 with open(file_path, 'w') as file:
                     json.dump(enddate_list, file)
 
-                webhook.webhook_ark(buy_price, bid_price, first_option, first_value, second_value)
+                webhook.webhook_ark(buy_price, bid_price, first_option, first_value, second_value, bid_date)
+        elif buy_price < buy_price2 * 0.8 and (first_value == '상' or (first_value == '중' and second_value == '중')):
+            if buy_date not in enddate_list:
+                # enddate 값이 리스트에 없으면 추가
+                enddate_list.append(buy_date)
+                # 리스트를 파일에 저장
+                with open(file_path, 'w') as file:
+                    json.dump(enddate_list, file)
 
+                webhook.webhook_ark(buy_price, buy_price2, first_option, first_value, second_value, buy_date)
         return bid_price
     except Exception as e:
         print(e)
@@ -143,19 +156,19 @@ def price_dataframe():
     상상, 상중, 상하, 상, 중중, 중하, 하하, 하 순으로 가격 표시하는 데이터프레임 생성 
     """
     data = {
-    '목걸이': [0, 0, 0, 0, 0, 0, 0, 0],
-    '귀걸이': [0, 0, 0, 0, 0, 0, 0, 0],
-    '반지': [0, 0, 0, 0, 0, 0, 0, 0]
+    '목걸이': [0, 0, 0, 0, 0, ],
+    '귀걸이': [0, 0, 0, 0, 0, ],
+    '반지': [0, 0, 0, 0, 0, ]
     }
 
     # 행 이름 지정
-    index = ['상상', '상중', '상하', '상', '중중', '중하', '하하', '하']
+    index = ['상상', '상중', '상하', '상', '중중']
     item  = [ '목걸이', '귀걸이', '반지']
 
     for i in item:
         for idx, option in enumerate(index):
             data[i][idx] = ark_data_parser( f"{i} {option}")
-            #print(f"{i} {option} 검색")
+            print(f"{i} {option} 검색")
 
     # DataFrame 생성
     df = pd.DataFrame(data, index=index)
@@ -169,9 +182,8 @@ if __name__ == "__main__":
 
     # print(get_auction_data(json_data, first_option=ark_option_dict['공격력 %'], first_value=3))
     
-    
     df = price_dataframe()
-    excel_file_path = 'output.xlsx'
+    excel_file_path = '/home/kimnuts/working/lostark_notice_bot/output.xlsx'
     df.to_excel(excel_file_path)
     print(df)
     

@@ -106,7 +106,7 @@ def webhook_api():
         print(f'{str(datetime.datetime.now())} : {df_notice.loc[i]["code"]}번 공지 전송')
 
 
-def webhook_ark(buy_price, bid_price, option1, value1, value2):
+def webhook_ark(buy_price, bid_price, option1, value1, value2, enddate):
     """
     최소 입찰가가 즉구가보다 낮을 때 알림
     """
@@ -119,6 +119,7 @@ def webhook_ark(buy_price, bid_price, option1, value1, value2):
                             description=f'즉구가 : {buy_price}\n최소 입찰가 : {bid_price}\n{option1} {value}',
                             color=0xff0000)
         emb.set_thumbnail(url=image_url)
+        emb.set_footer(text=f'경매장 종료일 : {enddate}')
         asyncio.run(send_webhook(emb))
         print(f'{str(datetime.datetime.now())} : 경매장 입찰가 알림 전송')
     except:
@@ -129,7 +130,7 @@ if __name__ == '__main__':
     try:
         webhook_api()
         print(f'{str(datetime.datetime.now())} 동작')
-        auction.price_dataframe()
+        
 
     except requests.exceptions.JSONDecodeError:
         print(f'{str(datetime.datetime.now())} : 점검중입니다.' )
