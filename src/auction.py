@@ -11,9 +11,10 @@ load_dotenv()
 
 api_url = "https://developer-lostark.game.onstove.com/auctions/items"
 api_key = os.getenv('API_KEY')
+dir = os.environ.get('DIR') # 사용할 시스템마다 다르기 따문에 .env에 저장
 
 # 경매장 요청 json 경로
-json_template_path = "/home/kimnuts/working/lostark_notice_bot/request.json"
+json_template_path = dir + "json/request.json"
 
 # 아크패시브 옵션 딕셔너리
 ark_option_dict = {
@@ -32,7 +33,7 @@ ark_value_dict = {
 }
 
 # 파일 경로 설정
-file_path = '/home/kimnuts/working/lostark_notice_bot/enddate_list.json'
+file_path = dir + 'json/enddate_list.json'
 
 # 초기 리스트 설정
 initial_list = []
@@ -183,7 +184,7 @@ if __name__ == "__main__":
     # print(get_auction_data(json_data, first_option=ark_option_dict['공격력 %'], first_value=3))
     
     df = price_dataframe()
-    excel_file_path = '/home/kimnuts/working/lostark_notice_bot/output.xlsx'
+    excel_file_path = dir + 'output.xlsx'
     df.to_excel(excel_file_path)
     print(df)
     
