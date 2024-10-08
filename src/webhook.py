@@ -8,12 +8,34 @@ import datetime, time
 import requests
 import pandas as pd
 import json
-import auction
+import auction 
+import traceback
 
 load_dotenv()
 
-hook_url = os.environ.get('WEBHOOK_URL') # 웹훅 dir은 credential하기에 .env로 관리
-f_code = os.environ.get('CODE_DIR') # 사용할 시스템마다 다르기 따문에 .env에 저장
+initial_list = []
+
+
+#hook_url = os.environ.get('WEBHOOK_URL') # 웹훅 dir은 credential하기에 .env로 관리
+hook_url_path = "/home/kimnuts/working/lostark_notice_bot/json/webhook.json"
+
+
+# 파일이 존재하지 않으면 초기 리스트를 파일에 저장
+if not os.path.exists(hook_url_path):
+    with open(hook_url_path, 'w') as file:
+        json.dump(initial_list, file)
+
+# 파일에서 리스트 읽어오기
+with open(hook_url_path, 'r') as file:
+    hook_url = json.load(file)
+
+
+
+
+
+dir = os.environ.get('DIR') # 사용할 시스템마다 다르기 따문에 .env에 저장
+f_code = dir + 'code' # 마지막으로 전송한 공지 코드 저장 파일
+
 flaks_url = 'http://127.0.0.1:5000/status'
 image_url = 'https://cdn-lostark.game.onstove.com/2018/obt/assets/images/common/thumb/logo.png' # 로스트아크 아이콘
 
@@ -59,8 +81,9 @@ async def send_webhook(emb):
     다중 주소에 전송하려면 함수 수정 필요
     """
     async with aiohttp.ClientSession() as session:
-        webhook = discord.Webhook.from_url(hook_url, session=session)
-        await webhook.send(embed=emb)
+        for i in hook_url:
+            webhook = discord.Webhook.from_url(i, session=session)
+            await webhook.send(embed=emb)
 
 
 def webhook():
@@ -134,8 +157,10 @@ if __name__ == '__main__':
 
     except requests.exceptions.JSONDecodeError:
         print(f'{str(datetime.datetime.now())} : 점검중입니다.' )
+        traceback.print_exc()
     except:
         print(f'{str(datetime.datetime.now())} : {repr(sys.exception())}')
+        traceback.print_exc()
 
 
     # for i in notice_list:

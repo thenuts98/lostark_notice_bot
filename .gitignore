@@ -1,3 +1,4 @@
 .env
+webhook.json
 **/__pycache__/
 **/.vscode/
