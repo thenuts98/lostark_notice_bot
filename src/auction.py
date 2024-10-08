@@ -11,10 +11,23 @@ load_dotenv()
 
 api_url = "https://developer-lostark.game.onstove.com/auctions/items"
 api_key = os.getenv('API_KEY')
-dir = os.environ.get('DIR') # 사용할 시스템마다 다르기 따문에 .env에 저장
 
 # 경매장 요청 json 경로
-json_template_path = dir + "json/request.json"
+json_template_path = os.path.dirname(os.path.abspath(__file__)) + '/json/request.json'
+
+hook_url_path = os.path.dirname(os.path.abspath(__file__)) + '/json/auction_webhook.json'
+
+initial_list = []
+# 파일이 존재하지 않으면 초기 리스트를 파일에 저장
+if not os.path.exists(hook_url_path):
+    with open(hook_url_path, 'w') as file:
+        json.dump(initial_list, file)
+
+# 파일에서 리스트 읽어오기
+with open(hook_url_path, 'r') as file:
+    auction_webhook = json.load(file)
+
+
 
 # 아크패시브 옵션 딕셔너리
 ark_option_dict = {
@@ -33,7 +46,7 @@ ark_value_dict = {
 }
 
 # 파일 경로 설정
-file_path = dir + 'json/enddate_list.json'
+file_path = os.path.dirname(os.path.abspath(__file__)) + '/json/enddate.json'
 
 # 초기 리스트 설정
 initial_list = []
@@ -129,7 +142,7 @@ def get_auction_data( first_option = "공격력 %", first_value = "상", second_
                 with open(file_path, 'w') as file:
                     json.dump(enddate_list, file)
 
-                webhook.webhook_ark(buy_price, bid_price, first_option, first_value, second_value, bid_date)
+                webhook.webhook_ark(buy_price, bid_price, first_option, first_value, second_value, bid_date, auction_webhook)
         elif buy_price < buy_price2 * 0.8 and (first_value == '상' or (first_value == '중' and second_value == '중')):
             if buy_date not in enddate_list:
                 # enddate 값이 리스트에 없으면 추가
@@ -184,7 +197,7 @@ if __name__ == "__main__":
     # print(get_auction_data(json_data, first_option=ark_option_dict['공격력 %'], first_value=3))
     
     df = price_dataframe()
-    excel_file_path = dir + 'output.xlsx'
+    excel_file_path = os.path.dirname(os.path.abspath(__file__)) + '/output.xlsx'
     df.to_excel(excel_file_path)
     print(df)
     

@@ -8,7 +8,6 @@ import datetime, time
 import requests
 import pandas as pd
 import json
-import auction 
 import traceback
 
 load_dotenv()
@@ -16,9 +15,10 @@ load_dotenv()
 initial_list = []
 
 
-#hook_url = os.environ.get('WEBHOOK_URL') # 웹훅 dir은 credential하기에 .env로 관리
-hook_url_path = "/home/kimnuts/working/lostark_notice_bot/json/webhook.json"
 
+# hook_url_path = "/home/kimnuts/working/lostark_notice_bot/json/webhook.json"
+
+hook_url_path = os.path.dirname(os.path.abspath(__file__)) + '/json/webhook.json'
 
 # 파일이 존재하지 않으면 초기 리스트를 파일에 저장
 if not os.path.exists(hook_url_path):
@@ -76,7 +76,7 @@ def make_embed_season3(): # 시즌 3 업데이트 기념 메세지. deprecated
     emb.set_thumbnail(url='https://cdn.discordapp.com/attachments/1178516056315269130/1260012051183570985/Screenshot_20240617_181541.jpg?ex=668dc52a&is=668c73aa&hm=702b991a9bd3657db9742771a8603616d8ac1a0af8395a77d4d33a5c4c2af0d3&')
     return emb
 
-async def send_webhook(emb): 
+async def send_webhook(emb, hook_url): 
     """emb 받아 지정된 hook_url에 전송
     다중 주소에 전송하려면 함수 수정 필요
     """
@@ -100,7 +100,7 @@ def webhook():
                 with open(f_code, 'w') as f:    
                     f.write(i)
                 emb = make_embed(i)
-                asyncio.run(send_webhook(emb))
+                asyncio.run(send_webhook(emb, hook_url))
                 print(f'{str(datetime.datetime.now())} : {i}번 공지 전송')
         
         # 웹사이트에 동작 상태 전송
@@ -125,11 +125,11 @@ def webhook_api():
         with open(f_code, 'w') as f:    
             f.write(str(df_notice.loc[i]['code']))
         emb = make_embed_api(df_notice.loc[i])
-        asyncio.run(send_webhook(emb))
+        asyncio.run(send_webhook(emb, hook_url))
         print(f'{str(datetime.datetime.now())} : {df_notice.loc[i]["code"]}번 공지 전송')
 
 
-def webhook_ark(buy_price, bid_price, option1, value1, value2, enddate):
+def webhook_ark(buy_price, bid_price, option1, value1, value2, enddate, webhook):
     """
     최소 입찰가가 즉구가보다 낮을 때 알림
     """
@@ -143,7 +143,7 @@ def webhook_ark(buy_price, bid_price, option1, value1, value2, enddate):
                             color=0xff0000)
         emb.set_thumbnail(url=image_url)
         emb.set_footer(text=f'경매장 종료일 : {enddate}')
-        asyncio.run(send_webhook(emb))
+        asyncio.run(send_webhook(emb, webhook))
         print(f'{str(datetime.datetime.now())} : 경매장 입찰가 알림 전송')
     except:
         print(f'{str(datetime.datetime.now())} : 경매장 입찰가 알림 전송 실패')
