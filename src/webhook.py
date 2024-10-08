@@ -28,9 +28,6 @@ with open(hook_url_path, 'r') as file:
     hook_url = json.load(file)
 
 
-
-
-
 dir = os.path.dirname(os.path.abspath(__file__)) # 사용할 시스템마다 다르기 따문에 .env에 저장
 f_code = dir + '/code' # 마지막으로 전송한 공지 코드 저장 파일
 

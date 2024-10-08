@@ -27,8 +27,6 @@ if not os.path.exists(hook_url_path):
 with open(hook_url_path, 'r') as file:
     auction_webhook = json.load(file)
 
-
-
 # 아크패시브 옵션 딕셔너리
 ark_option_dict = {
     "공격력 %" : 45,
