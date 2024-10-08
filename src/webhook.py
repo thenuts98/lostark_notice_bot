@@ -1,4 +1,4 @@
-import working.lostark_notice_bot.src.notice as notice
+import notice
 import discord
 from dotenv import load_dotenv
 import os, sys
@@ -8,7 +8,8 @@ import datetime, time
 import requests
 import pandas as pd
 import json
-import working.lostark_notice_bot.src.auction as auction
+import auction 
+import traceback
 
 load_dotenv()
 
@@ -16,7 +17,7 @@ initial_list = []
 
 
 #hook_url = os.environ.get('WEBHOOK_URL') # 웹훅 dir은 credential하기에 .env로 관리
-hook_url_path = "/home/kimnuts/working/lostark_notice_bot/webhook.json"
+hook_url_path = "/home/kimnuts/working/lostark_notice_bot/json/webhook.json"
 
 
 # 파일이 존재하지 않으면 초기 리스트를 파일에 저장
@@ -156,8 +157,10 @@ if __name__ == '__main__':
 
     except requests.exceptions.JSONDecodeError:
         print(f'{str(datetime.datetime.now())} : 점검중입니다.' )
+        traceback.print_exc()
     except:
         print(f'{str(datetime.datetime.now())} : {repr(sys.exception())}')
+        traceback.print_exc()
 
 
     # for i in notice_list:

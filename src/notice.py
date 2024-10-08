@@ -5,7 +5,7 @@ import os
 from dotenv import load_dotenv
 import json
 import pandas as pd
-import working.lostark_notice_bot.src.auction as auction
+import auction
 
 load_dotenv()
 
