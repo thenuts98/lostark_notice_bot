@@ -10,11 +10,9 @@ import pandas as pd
 import json
 import traceback
 
-load_dotenv()
+load_dotenv() # .env 파일에서 환경변수 로드
 
 initial_list = []
-
-
 
 # hook_url_path = "/home/kimnuts/working/lostark_notice_bot/json/webhook.json"
 
@@ -162,11 +160,3 @@ if __name__ == '__main__':
         print(f'{str(datetime.datetime.now())} : {repr(sys.exception())}')
         traceback.print_exc()
 
-
-    # for i in notice_list:
-    #     try:
-    #         emb = make_embed(i)                 
-    #         asyncio.run(send_webhook(emb))
-    #     except Exception as e:
-    #         print(e)
-                
