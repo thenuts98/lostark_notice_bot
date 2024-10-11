@@ -152,7 +152,6 @@ if __name__ == '__main__':
 
     except requests.exceptions.JSONDecodeError:
         print(f'{str(datetime.datetime.now())} : 점검중입니다.' )
-        traceback.print_exc()
     except:
         print(f'{str(datetime.datetime.now())} : {repr(sys.exception())}')
         traceback.print_exc()
