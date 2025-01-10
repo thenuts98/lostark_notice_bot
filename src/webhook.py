@@ -138,6 +138,7 @@ def webhook_api():
         emb = make_embed_api(df_notice.loc[i])
         asyncio.run(send_webhook(emb, hook_url))
         logger.info(f"{df_notice.loc[i]['code']}번 공지 전송")
+        print(f"{df_notice.loc[i]['code']}번 공지 전송")
 
 
 def webhook_ark(buy_price, bid_price, option1, value1, value2, enddate, webhook):
