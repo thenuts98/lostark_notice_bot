@@ -70,7 +70,7 @@ sequenceDiagram
 - [ ] telegram 알림
 - [x] crontab 사용하여 주기적인 작동
     - 해야할까? -> 해야함
-
+- [ ] logging 사용하여 로그 최적화
 ## etc
 내 채권봇이랑 공지알림봇 소스들 어디감? 
 
