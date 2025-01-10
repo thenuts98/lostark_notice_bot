@@ -164,7 +164,9 @@ def webhook_ark(buy_price, bid_price, option1, value1, value2, enddate, webhook)
 if __name__ == '__main__':
 
     try:
+        logger.info('작동')
         webhook_api()
+        
     except requests.exceptions.JSONDecodeError:
         logger.info('점검중입니다.')
     except:
