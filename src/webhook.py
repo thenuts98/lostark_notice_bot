@@ -19,7 +19,7 @@ LOG_FILE_CNT = 10
 LOG_LEVEL = logging.INFO
 
 logger = logging.getLogger('log_test')
-logfile_H = logging.handlers.RotatingFileHandler("../logs/log_test.log", maxBytes=LOG_MAX_SIZE, backupCount=LOG_FILE_CNT)
+logfile_H = logging.handlers.RotatingFileHandler(os.path.dirname(os.path.abspath(__file__))+"/logs/log_test.log", maxBytes=LOG_MAX_SIZE, backupCount=LOG_FILE_CNT)
 formatter = logging.Formatter('[%(asctime)s|%(levelname)s|%(funcName)s|%(lineno)d] %(message)s')
 logfile_H.setFormatter(formatter)
 logger.addHandler(logfile_H)
