@@ -79,4 +79,4 @@ sequenceDiagram
 
 ## Reference
 [Discord Python Package](https://discordpy.readthedocs.io/en/stable/api.html)
-
+[Logging 패키지 사용하기](https://jh-bk.tistory.com/40)
