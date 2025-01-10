@@ -164,8 +164,6 @@ if __name__ == '__main__':
 
     try:
         webhook_api()
-        
-
     except requests.exceptions.JSONDecodeError:
         logger.info('점검중입니다.')
     except:
