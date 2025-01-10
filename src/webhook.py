@@ -9,6 +9,22 @@ import requests
 import pandas as pd
 import json
 import traceback
+import logging
+import logging.handlers
+
+# Logging Parameter
+
+LOG_MAX_SIZE = 1024 * 1024 * 10
+LOG_FILE_CNT = 10
+LOG_LEVEL = logging.INFO
+
+logger = logging.getLogger('log_test')
+logfile_H = logging.handlers.RotatingFileHandler("../logs/log_test.log", maxBytes=LOG_MAX_SIZE, backupCount=LOG_FILE_CNT)
+formatter = logging.Formatter('[%(asctime)s|%(levelname)s|%(funcName)s|%(lineno)d] %(message)s')
+logfile_H.setFormatter(formatter)
+logger.addHandler(logfile_H)
+logger.setLevel(LOG_LEVEL)
+
 
 load_dotenv() # .env 파일에서 환경변수 로드
 
@@ -121,7 +137,7 @@ def webhook_api():
             f.write(str(df_notice.loc[i]['code']))
         emb = make_embed_api(df_notice.loc[i])
         asyncio.run(send_webhook(emb, hook_url))
-        print(f'{str(datetime.datetime.now())} : {df_notice.loc[i]["code"]}번 공지 전송')
+        logger.info(f"{df_notice.loc[i]["code"]}번 공지 전송")
 
 
 def webhook_ark(buy_price, bid_price, option1, value1, value2, enddate, webhook):
@@ -145,15 +161,14 @@ def webhook_ark(buy_price, bid_price, option1, value1, value2, enddate, webhook)
 
 
 if __name__ == '__main__':
+
     try:
         webhook_api()
-        print(f'{str(datetime.datetime.now())} 동작')
         
 
     except requests.exceptions.JSONDecodeError:
-        print(f'{str(datetime.datetime.now())} : 점검중입니다.' )
-        traceback.print_exc()
+        logger.info('점검중입니다.')
     except:
-        print(f'{str(datetime.datetime.now())} : {repr(sys.exception())}')
-        traceback.print_exc()
+        logger.error(f'{repr(sys.exception())}')
+        
 
