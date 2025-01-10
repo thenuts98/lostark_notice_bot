@@ -168,6 +168,7 @@ if __name__ == '__main__':
     except requests.exceptions.JSONDecodeError:
         logger.info('점검중입니다.')
     except:
+        print(f'{repr(sys.exception())}')
         logger.error(f'{repr(sys.exception())}')
         
 
