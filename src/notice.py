@@ -62,7 +62,7 @@ def get_notice_api():
     # API 호출에 필요한 헤더 작성
     headers = {
         'accept' : 'application/json',
-        'authorization' : api_key
+        'authorization' : 'bearer ' + api_key
     }
     
     response = requests.get(api_notice_url, headers=headers) # RESPONSE 200이 정상 응답

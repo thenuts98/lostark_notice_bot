@@ -19,13 +19,8 @@ LOG_FILE_CNT = 10
 LOG_LEVEL = logging.INFO
 
 logger = logging.getLogger('log_test')
-logfile_H = logging.handlers.RotatingFileHandler(os.path.dirname(os.path.abspath(__file__))+"/logs/log_test.log", maxBytes=LOG_MAX_SIZE, backupCount=LOG_FILE_CNT)
 formatter = logging.Formatter('[%(asctime)s|%(levelname)s|%(funcName)s|%(lineno)d] %(message)s')
-logfile_H.setFormatter(formatter)
-logger.addHandler(logfile_H)
 logger.setLevel(LOG_LEVEL)
-
-
 load_dotenv() # .env 파일에서 환경변수 로드
 
 initial_list = []
@@ -42,7 +37,6 @@ if not os.path.exists(hook_url_path):
 # 파일에서 리스트 읽어오기
 with open(hook_url_path, 'r') as file:
     hook_url = json.load(file)
-
 
 dir = os.path.dirname(os.path.abspath(__file__)) # 사용할 시스템마다 다르기 따문에 .env에 저장
 f_code = dir + '/code' # 마지막으로 전송한 공지 코드 저장 파일
